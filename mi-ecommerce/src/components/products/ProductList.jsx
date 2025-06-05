@@ -1,59 +1,66 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './ProductList.css';
 
 const ProductList = () => {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        fetchProducts();
-    }, []);
-
-    const fetchProducts = async () => {
-        try {
-            const response = await fetch('http://localhost:3002/products');
-            const data = await response.json();
-            setProducts(data);
-            setLoading(false);
-        } catch (err) {
-            setError('Error al cargar los productos');
-            setLoading(false);
+    const [products] = useState([
+        {
+            id: 1,
+            name: 'Supreme Box Logo Hoodie',
+            price: 299.99,
+            image: 'https://placeholder.com/400x300',
+            category: 'Hoodies'
+        },
+        {
+            id: 2,
+            name: 'BAPE Camo T-Shirt',
+            price: 129.99,
+            image: 'https://placeholder.com/400x300',
+            category: 'T-Shirts'
+        },
+        {
+            id: 3,
+            name: 'Off-White Industrial Belt',
+            price: 199.99,
+            image: 'https://placeholder.com/400x300',
+            category: 'Accessories'
+        },
+        {
+            id: 4,
+            name: 'Nike x Travis Scott Air Jordan 1',
+            price: 499.99,
+            image: 'https://placeholder.com/400x300',
+            category: 'Footwear'
+        },
+        {
+            id: 5,
+            name: 'Palace Tri-Ferg Deck',
+            price: 69.99,
+            image: 'https://placeholder.com/400x300',
+            category: 'Accessories'
+        },
+        {
+            id: 6,
+            name: 'Stüssy Basic Logo Tee',
+            price: 45.99,
+            image: 'https://placeholder.com/400x300',
+            category: 'T-Shirts'
         }
-    };
-
-    if (loading) return <div className="loading">Cargando productos...</div>;
-    if (error) return <div className="error">{error}</div>;
+    ]);
 
     return (
         <div className="products-container">
-            <h1>Nuestros Productos</h1>
+            <h1>Latest Streetwear Drops</h1>
             <div className="products-grid">
                 {products.map(product => (
-                    <div key={product._id} className="product-card">
-                        <img 
-                            src={product.image || 'https://via.placeholder.com/150'} 
-                            alt={product.name}
-                            className="product-image"
-                        />
+                    <div key={product.id} className="product-card">
+                        <div className="product-image">
+                            <img src={product.image} alt={product.name} />
+                        </div>
                         <div className="product-info">
                             <h3>{product.name}</h3>
-                            <p className="product-description">{product.description}</p>
+                            <p className="product-category">{product.category}</p>
                             <p className="product-price">${product.price}</p>
-                            <button 
-                                className="add-to-cart-btn"
-                                onClick={() => {
-                                    // Si el usuario no está autenticado, redirigir al login
-                                    const token = localStorage.getItem('token');
-                                    if (!token) {
-                                        window.location.href = '/login';
-                                        return;
-                                    }
-                                    // Aquí irá la lógica para añadir al carrito
-                                }}
-                            >
-                                Añadir al Carrito
-                            </button>
+                            <button className="add-to-cart">Add to Cart</button>
                         </div>
                     </div>
                 ))}
