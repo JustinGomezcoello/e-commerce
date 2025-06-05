@@ -2,7 +2,6 @@
 
 A modern, responsive e-commerce platform specialized in streetwear fashion, built with React and microservices architecture.
 
-![Streetwear Platform](https://your-screenshot-url.com)
 
 ## 🚀 Features
 
