@@ -68,8 +68,8 @@ Before you begin, ensure you have the following installed:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/streetwear-ecommerce.git
-   cd streetwear-ecommerce
+   git https://github.com/JustinGomezcoello/e-commerce
+   cd e-commerce
    ```
 
 2. **Install frontend dependencies**
@@ -96,15 +96,24 @@ Before you begin, ensure you have the following installed:
    PRODUCT_SERVICE_URL=http://service-products:3002
    ORDER_SERVICE_URL=http://service-orders:3003
    ```
-
-5. **Start the application**
+5. **Rebuild and start Docker services**
    ```bash
-   # Start all services using Docker Compose
-   docker-compose up -d
+   # Stop and remove existing containers
+   docker-compose down
 
-   # Start frontend development server
+   # Rebuild all images
+   docker-compose build
+
+   # Start all services
+   docker-compose up -d
+   
+   ```
+
+6. **Start frontend development server**
+   ```bash
    cd mi-ecommerce
    npm start
+
    ```
 
 ## 🚀 Usage
@@ -145,12 +154,6 @@ After installation, you can access:
 - Input validation
 - Secure password hashing
 
-## 📱 Mobile Responsiveness
-
-The application is fully responsive and tested on:
-- iOS devices (iPhone, iPad)
-- Android devices
-- Various screen sizes and orientations
 
 ## 🌟 Best Practices
 
@@ -194,39 +197,11 @@ Common issues and solutions:
    npm install
    ```
 
-## 📈 Future Improvements
 
-- [ ] Implement real-time chat support
-- [ ] Add multiple payment gateways
-- [ ] Implement AI-powered product recommendations
-- [ ] Add multi-language support
-- [ ] Implement advanced search features
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
-## 👥 Team
 
-- Frontend Developer - [Name]
-- Backend Developer - [Name]
-- UI/UX Designer - [Name]
-- DevOps Engineer - [Name]
 
-## 📞 Support
-
-For support, email support@streetwear.com or join our Slack channel.
-
-## 🙏 Acknowledgments
-
-- React.js community
-- Docker community
-- All contributors and testers 
