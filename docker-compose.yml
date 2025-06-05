@@ -5,6 +5,11 @@ services:
     build: ./mi-ecommerce
     ports:
       - "3000:3000"
+    volumes:
+      - ./mi-ecommerce:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
     depends_on:
       - servicio-usuarios
       - servicio-productos
@@ -14,16 +19,22 @@ services:
     build: ./servicio-usuarios
     ports:
       - "3001:3001"
+    depends_on:
+      - mongo
 
   servicio-productos:
     build: ./servicio-productos
     ports:
       - "3002:3002"
+    depends_on:
+      - mongo
 
   servicio-pedidos:
     build: ./servicio-pedidos
     ports:
       - "3003:3003"
+    depends_on:
+      - mongo
 
   mongo:
     image: mongo:latest
@@ -36,7 +47,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongoadmin
       MONGO_INITDB_ROOT_PASSWORD: secretpassword
-
 
 volumes:
   mongo-data:
