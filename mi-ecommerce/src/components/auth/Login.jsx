@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import './Auth.css';
 
 const Login = () => {
@@ -48,42 +49,58 @@ const Login = () => {
     };
 
     return (
-        <div className="auth-container">
-            <div className="auth-box">
-                <h2>Iniciar Sesión</h2>
+        <motion.div 
+            className="auth-container"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
+            <motion.div 
+                className="auth-card"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+            >
+                <h2>Welcome Back</h2>
                 {error && <div className="error-message">{error}</div>}
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="username">Usuario:</label>
-                        <input
+                        <label>Username</label>
+                        <motion.input
+                            whileFocus={{ scale: 1.02 }}
                             type="text"
-                            id="username"
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
+                            placeholder="Enter your username"
                             required
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="password">Contraseña:</label>
-                        <input
+                        <label>Password</label>
+                        <motion.input
+                            whileFocus={{ scale: 1.02 }}
                             type="password"
-                            id="password"
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
+                            placeholder="Enter your password"
                             required
                         />
                     </div>
-                    <button type="submit" className="auth-button">
-                        Iniciar Sesión
-                    </button>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        type="submit"
+                        className="auth-button"
+                    >
+                        Sign In
+                    </motion.button>
                 </form>
                 <p className="auth-link">
-                    ¿No tienes una cuenta? <a href="/register">Regístrate aquí</a>
+                    Don't have an account? <Link to="/register">Register here</Link>
                 </p>
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     );
 };
 

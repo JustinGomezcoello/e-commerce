@@ -7,80 +7,56 @@ const ProductList = () => {
     const [filteredProducts, setFilteredProducts] = useState([]);
     
     const products = [
-        // Hoodies
+        // T-Shirts
         {
             id: 1,
-            name: 'Supreme Box Logo Hoodie',
-            price: 299.99,
-            image: 'https://i.imgur.com/8PqZJE8.jpg',
-            category: 'Hoodies'
+            name: 'To Love or to Be Loved',
+            price: 49.99,
+            image: 'https://i.imgur.com/nV3oM3K.jpg',
+            category: 'T-Shirts',
+            description: 'Limited edition philosophical streetwear piece'
         },
         {
             id: 2,
-            name: 'BAPE Full Zip Shark Hoodie',
-            price: 389.99,
-            image: 'https://i.imgur.com/YXJLWBv.jpg',
-            category: 'Hoodies'
+            name: 'Mind Games Tee',
+            price: 45.99,
+            image: 'https://i.imgur.com/2X4yKjD.jpg',
+            category: 'T-Shirts',
+            description: 'Premium cotton with minimalist design'
         },
-        // T-Shirts
+        // Hoodies
         {
             id: 3,
-            name: 'BAPE Camo T-Shirt',
-            price: 129.99,
-            image: 'https://i.imgur.com/QN7SExW.jpg',
-            category: 'T-Shirts'
+            name: 'Ethereal Dreams Hoodie',
+            price: 89.99,
+            image: 'https://i.imgur.com/7rR8qG5.jpg',
+            category: 'Hoodies',
+            description: 'Oversized fit with embroidered details'
         },
         {
             id: 4,
-            name: 'Off-White Arrows T-Shirt',
-            price: 159.99,
-            image: 'https://i.imgur.com/7ZXwVKX.jpg',
-            category: 'T-Shirts'
+            name: 'Silent Thoughts Hoodie',
+            price: 95.99,
+            image: 'https://i.imgur.com/uD3levB.jpg',
+            category: 'Hoodies',
+            description: 'Heavy-weight cotton blend'
         },
         // Accessories
         {
             id: 5,
-            name: 'Off-White Industrial Belt',
-            price: 199.99,
-            image: 'https://i.imgur.com/9ZYqhWX.jpg',
-            category: 'Accessories'
+            name: 'Mindful Chain',
+            price: 29.99,
+            image: 'https://i.imgur.com/pK9VVVt.jpg',
+            category: 'Accessories',
+            description: 'Stainless steel with vintage finish'
         },
         {
             id: 6,
-            name: 'Supreme Backpack',
-            price: 249.99,
-            image: 'https://i.imgur.com/L5JvqnH.jpg',
-            category: 'Accessories'
-        },
-        // Caps
-        {
-            id: 7,
-            name: 'Supreme Camp Cap',
-            price: 79.99,
-            image: 'https://i.imgur.com/K9YH3FZ.jpg',
-            category: 'Caps'
-        },
-        {
-            id: 8,
-            name: 'BAPE Trucker Cap',
-            price: 89.99,
-            image: 'https://i.imgur.com/2X8VJvP.jpg',
-            category: 'Caps'
-        },
-        // Sneakers
-        {
-            id: 9,
-            name: 'Nike x Travis Scott Air Jordan 1',
-            price: 499.99,
-            image: 'https://i.imgur.com/XZwWXfU.jpg',
-            category: 'Sneakers'
-        },
-        {
-            id: 10,
-            name: 'Yeezy Boost 350 V2',
-            price: 399.99,
-            image: 'https://i.imgur.com/NhcXvPN.jpg',
-            category: 'Sneakers'
+            name: 'Abstract Thoughts Bag',
+            price: 39.99,
+            image: 'https://i.imgur.com/QN7dQk8.jpg',
+            category: 'Accessories',
+            description: 'Canvas tote with artistic print'
         }
     ];
 
@@ -99,10 +75,10 @@ const ProductList = () => {
         setFilteredProducts(filtered);
     };
 
-    const categories = ['all', 'Hoodies', 'T-Shirts', 'Accessories', 'Caps', 'Sneakers'];
+    const categories = ['all', 'T-Shirts', 'Hoodies', 'Accessories'];
 
     const handleWhatsApp = (product) => {
-        const message = `¡Hola! Estoy interesado en ${product.name} (${product.price} USD)`;
+        const message = `Hi! I'm interested in ${product.name} (${product.price} USD)`;
         window.open(`https://wa.me/+593XXXXXXXXX?text=${encodeURIComponent(message)}`, '_blank');
     };
 
@@ -110,7 +86,7 @@ const ProductList = () => {
         <div className="products-page">
             <div className="location-banner">
                 <i className="fas fa-map-marker-alt"></i>
-                Envíos disponibles solo en Quito, Ecuador
+                Shipping available only in Quito, Ecuador
             </div>
             
             <div className="filters-section">
@@ -127,7 +103,7 @@ const ProductList = () => {
                 </div>
                 
                 <div className="price-filter">
-                    <label>Precio máximo: ${priceRange}</label>
+                    <label>Maximum price: ${priceRange}</label>
                     <input
                         type="range"
                         min="0"
@@ -138,7 +114,7 @@ const ProductList = () => {
                 </div>
             </div>
 
-            <h1>Latest Streetwear Drops</h1>
+            <h1>Latest Collection</h1>
             
             <div className="products-grid">
                 {filteredProducts.map(product => (
@@ -146,7 +122,7 @@ const ProductList = () => {
                         <div className="product-image">
                             <img src={product.image} alt={product.name} />
                             <div className="product-overlay">
-                                <span className="view-details">View Details</span>
+                                <span className="product-description">{product.description}</span>
                             </div>
                         </div>
                         <div className="product-info">

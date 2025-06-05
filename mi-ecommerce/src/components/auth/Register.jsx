@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import './Auth.css';
 
 const Register = () => {
     const [formData, setFormData] = useState({
         username: '',
-        password: '',
         email: '',
-        name: ''
+        fullName: '',
+        password: ''
     });
     const [error, setError] = useState('');
     const navigate = useNavigate();
@@ -50,64 +51,82 @@ const Register = () => {
     };
 
     return (
-        <div className="auth-container">
-            <div className="auth-box">
-                <h2>Registro</h2>
+        <motion.div 
+            className="auth-container"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
+            <motion.div 
+                className="auth-card"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+            >
+                <h2>Join Our Community</h2>
                 {error && <div className="error-message">{error}</div>}
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="username">Usuario:</label>
-                        <input
+                        <label>Username</label>
+                        <motion.input
+                            whileFocus={{ scale: 1.02 }}
                             type="text"
-                            id="username"
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
+                            placeholder="Choose a username"
                             required
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="email">Email:</label>
-                        <input
+                        <label>Email</label>
+                        <motion.input
+                            whileFocus={{ scale: 1.02 }}
                             type="email"
-                            id="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
+                            placeholder="Enter your email"
                             required
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="name">Nombre completo:</label>
-                        <input
+                        <label>Full Name</label>
+                        <motion.input
+                            whileFocus={{ scale: 1.02 }}
                             type="text"
-                            id="name"
-                            name="name"
-                            value={formData.name}
+                            name="fullName"
+                            value={formData.fullName}
                             onChange={handleChange}
+                            placeholder="Enter your full name"
                             required
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="password">Contraseña:</label>
-                        <input
+                        <label>Password</label>
+                        <motion.input
+                            whileFocus={{ scale: 1.02 }}
                             type="password"
-                            id="password"
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
+                            placeholder="Create a password"
                             required
                         />
                     </div>
-                    <button type="submit" className="auth-button">
-                        Registrarse
-                    </button>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        type="submit"
+                        className="auth-button"
+                    >
+                        Create Account
+                    </motion.button>
                 </form>
                 <p className="auth-link">
-                    ¿Ya tienes una cuenta? <a href="/login">Inicia sesión aquí</a>
+                    Already have an account? <Link to="/login">Sign in here</Link>
                 </p>
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     );
 };
 
