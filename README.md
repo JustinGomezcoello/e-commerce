@@ -100,11 +100,8 @@ Before you begin, ensure you have the following installed:
    # Stop and remove existing containers
    docker-compose down
 
-   # Rebuild all images
-   docker-compose build
-
-   # Start all services
-   docker-compose up -d
+   # rebuild and start the containers:
+   docker-compose up --build
    
    ```
 
