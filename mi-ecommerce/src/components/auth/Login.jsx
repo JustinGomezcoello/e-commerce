@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import './Auth.css';
 
 const Login = () => {
@@ -10,6 +11,7 @@ const Login = () => {
     });
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleChange = (e) => {
         setFormData({
@@ -34,14 +36,11 @@ const Login = () => {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.message || 'Error al iniciar sesión');
+                throw new Error(data.message || t('login_error'));
             }
 
-            // Guardar el token y la información del usuario
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
-
-            // Redirigir al usuario a la página principal
             navigate('/');
         } catch (error) {
             setError(error.message);
@@ -51,54 +50,76 @@ const Login = () => {
     return (
         <motion.div 
             className="auth-container"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
         >
+            <div className="auth-background"></div>
             <motion.div 
                 className="auth-card"
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 300 }}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
             >
-                <h2>Welcome Back</h2>
-                {error && <div className="error-message">{error}</div>}
+                <motion.h2
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.3, duration: 0.5 }}
+                    className="auth-title"
+                >
+                    {t('welcome_back')}
+                </motion.h2>
+                {error && (
+                    <motion.div 
+                        className="error-message"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                    >
+                        {error}
+                    </motion.div>
+                )}
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Username</label>
+                        <label>{t('username')}</label>
                         <motion.input
                             whileFocus={{ scale: 1.02 }}
                             type="text"
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
-                            placeholder="Enter your username"
+                            placeholder={t('enter_username')}
                             required
                         />
                     </div>
                     <div className="form-group">
-                        <label>Password</label>
+                        <label>{t('password')}</label>
                         <motion.input
                             whileFocus={{ scale: 1.02 }}
                             type="password"
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
-                            placeholder="Enter your password"
+                            placeholder={t('enter_password')}
                             required
                         />
                     </div>
                     <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        whileHover={{ scale: 1.03, backgroundColor: "#ffd700" }}
+                        whileTap={{ scale: 0.98 }}
                         type="submit"
                         className="auth-button"
                     >
-                        Sign In
+                        {t('sign_in')}
                     </motion.button>
                 </form>
-                <p className="auth-link">
-                    Don't have an account? <Link to="/register">Register here</Link>
-                </p>
+                <motion.p 
+                    className="auth-link"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                >
+                    {t('no_account')} <Link to="/register">{t('register_here')}</Link>
+                </motion.p>
             </motion.div>
         </motion.div>
     );

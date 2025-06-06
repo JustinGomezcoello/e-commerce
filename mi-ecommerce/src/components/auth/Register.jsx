@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import './Auth.css';
 
 const Register = () => {
@@ -12,6 +13,7 @@ const Register = () => {
     });
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleChange = (e) => {
         setFormData({
@@ -36,7 +38,7 @@ const Register = () => {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.message || 'Error al registrar usuario');
+                throw new Error(data.message || t('register_error'));
             }
 
             // Guardar el token y la información del usuario
@@ -53,78 +55,100 @@ const Register = () => {
     return (
         <motion.div 
             className="auth-container"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
         >
+            <div className="auth-background"></div>
             <motion.div 
                 className="auth-card"
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 300 }}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
             >
-                <h2>Join Our Community</h2>
-                {error && <div className="error-message">{error}</div>}
+                <motion.h2
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.3, duration: 0.5 }}
+                    className="auth-title"
+                >
+                    {t('join_community')}
+                </motion.h2>
+                {error && (
+                    <motion.div 
+                        className="error-message"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                    >
+                        {error}
+                    </motion.div>
+                )}
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Username</label>
+                        <label>{t('username')}</label>
                         <motion.input
                             whileFocus={{ scale: 1.02 }}
                             type="text"
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
-                            placeholder="Choose a username"
+                            placeholder={t('enter_username')}
                             required
                         />
                     </div>
                     <div className="form-group">
-                        <label>Email</label>
+                        <label>{t('email')}</label>
                         <motion.input
                             whileFocus={{ scale: 1.02 }}
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="Enter your email"
+                            placeholder={t('enter_email')}
                             required
                         />
                     </div>
                     <div className="form-group">
-                        <label>Full Name</label>
+                        <label>{t('full_name')}</label>
                         <motion.input
                             whileFocus={{ scale: 1.02 }}
                             type="text"
                             name="fullName"
                             value={formData.fullName}
                             onChange={handleChange}
-                            placeholder="Enter your full name"
+                            placeholder={t('enter_full_name')}
                             required
                         />
                     </div>
                     <div className="form-group">
-                        <label>Password</label>
+                        <label>{t('password')}</label>
                         <motion.input
                             whileFocus={{ scale: 1.02 }}
                             type="password"
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
-                            placeholder="Create a password"
+                            placeholder={t('enter_password')}
                             required
                         />
                     </div>
                     <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        whileHover={{ scale: 1.03, backgroundColor: "#ffd700" }}
+                        whileTap={{ scale: 0.98 }}
                         type="submit"
                         className="auth-button"
                     >
-                        Create Account
+                        {t('create_account')}
                     </motion.button>
                 </form>
-                <p className="auth-link">
-                    Already have an account? <Link to="/login">Sign in here</Link>
-                </p>
+                <motion.p 
+                    className="auth-link"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                >
+                    {t('have_account')} <Link to="/login">{t('login_here')}</Link>
+                </motion.p>
             </motion.div>
         </motion.div>
     );

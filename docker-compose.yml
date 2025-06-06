@@ -8,33 +8,36 @@ services:
     volumes:
       - ./mi-ecommerce:/usr/src/app
       - /usr/src/app/node_modules
+      - /usr/src/app/build
     environment:
-      - CHOKIDAR_USEPOLLING=true
+      - NODE_ENV=production
+      - CI=false
+      - PORT=3000
     depends_on:
-      - servicio-usuarios
       - servicio-productos
+      - servicio-usuarios
       - servicio-pedidos
 
   servicio-usuarios:
     build: ./servicio-usuarios
     ports:
       - "3001:3001"
-    depends_on:
-      - mongo
+    environment:
+      - NODE_ENV=production
 
   servicio-productos:
     build: ./servicio-productos
     ports:
       - "3002:3002"
-    depends_on:
-      - mongo
+    environment:
+      - NODE_ENV=production
 
   servicio-pedidos:
     build: ./servicio-pedidos
     ports:
       - "3003:3003"
-    depends_on:
-      - mongo
+    environment:
+      - NODE_ENV=production
 
   mongo:
     image: mongo:latest

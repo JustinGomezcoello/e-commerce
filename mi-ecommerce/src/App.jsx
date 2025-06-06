@@ -5,6 +5,7 @@ import ProductList from './components/products/ProductList';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Profile from './components/profile/Profile';
+import Cart from './components/cart/Cart';
 import PrivateRoute from './components/PrivateRoute';
 import { isAuthenticated } from './utils/auth';
 import './App.css';
@@ -46,7 +47,7 @@ function App() {
               path="/cart"
               element={
                 <PrivateRoute>
-                  <div>Shopping Cart</div>
+                  <Cart />
                 </PrivateRoute>
               }
             />

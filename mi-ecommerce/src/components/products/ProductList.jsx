@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import './ProductList.css';
 
 // Importar las imágenes (aquí deberás reemplazar con tus propias imágenes)
-import tshirt1 from '../assets/images/tshirt1.jpg';
-import tshirt2 from '../assets/images/tshirt2.jpg';
-import hoodie1 from '../assets/images/hoodie1.jpg';
-import hoodie2 from '../assets/images/hoodie2.jpg';
-import accessory1 from '../assets/images/accessory1.jpg';
-import accessory2 from '../assets/images/accessory2.jpg';
+import tshirt1 from '../../assets/images/tshirt1.png';
+import tshirt2 from '../../assets/images/tshirt2.png';
+import hoodie1 from '../../assets/images/hoodie1.png';
+import hoodie2 from '../../assets/images/hoodie2.png';
+import accessory1 from '../../assets/images/accessory1.png';
+import accessory2 from '../../assets/images/accessory2.png';
 
 const ProductList = () => {
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [priceRange, setPriceRange] = useState(500);
     const [filteredProducts, setFilteredProducts] = useState([]);
+    const { t } = useTranslation();
     
     const products = [
         // T-Shirts
@@ -22,7 +24,7 @@ const ProductList = () => {
             price: 49.99,
             image: tshirt1, // Usar la imagen importada
             category: 'T-Shirts',
-            description: 'Limited edition philosophical streetwear piece'
+            description: t('limited_edition')
         },
         {
             id: 2,
@@ -30,7 +32,7 @@ const ProductList = () => {
             price: 45.99,
             image: tshirt2, // Usar la imagen importada
             category: 'T-Shirts',
-            description: 'Premium cotton with minimalist design'
+            description: t('premium_cotton')
         },
         // Hoodies
         {
@@ -39,7 +41,7 @@ const ProductList = () => {
             price: 89.99,
             image: hoodie1, // Usar la imagen importada
             category: 'Hoodies',
-            description: 'Oversized fit with embroidered details'
+            description: t('oversized_fit')
         },
         {
             id: 4,
@@ -47,7 +49,7 @@ const ProductList = () => {
             price: 95.99,
             image: hoodie2, // Usar la imagen importada
             category: 'Hoodies',
-            description: 'Heavy-weight cotton blend'
+            description: t('heavy_weight')
         },
         // Accessories
         {
@@ -56,7 +58,7 @@ const ProductList = () => {
             price: 29.99,
             image: accessory1, // Usar la imagen importada
             category: 'Accessories',
-            description: 'Stainless steel with vintage finish'
+            description: t('stainless_steel')
         },
         {
             id: 6,
@@ -64,7 +66,7 @@ const ProductList = () => {
             price: 39.99,
             image: accessory2, // Usar la imagen importada
             category: 'Accessories',
-            description: 'Canvas tote with artistic print'
+            description: t('canvas_tote')
         }
     ];
 
@@ -83,10 +85,7 @@ const ProductList = () => {
         setFilteredProducts(filtered);
     };
 
-    const categories = ['all', 'T-Shirts', 'Hoodies', 'Accessories'];
-
     const handleBuyNow = (product) => {
-        // Aquí puedes poner tu número de WhatsApp real
         const phoneNumber = '+593980267544';
         const message = `¡Hola! Me interesa comprar ${product.name} por $${product.price}. ¿Está disponible?`;
         const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
@@ -97,24 +96,24 @@ const ProductList = () => {
         <div className="products-page">
             <div className="location-banner">
                 <i className="fas fa-map-marker-alt"></i>
-                Shipping available only in Quito, Ecuador
+                {t('shipping_available')}
             </div>
 
             <div className="filters-section">
                 <div className="categories">
-                    {categories.map(category => (
+                    {['all', 'T-Shirts', 'Hoodies', 'Accessories'].map(category => (
                         <button
                             key={category}
                             className={`category-btn ${selectedCategory === category ? 'active' : ''}`}
                             onClick={() => setSelectedCategory(category)}
                         >
-                            {category === 'all' ? 'All Products' : category}
+                            {category === 'all' ? t('all_products') : t(category)}
                         </button>
                     ))}
                 </div>
                 
                 <div className="price-filter">
-                    <label>Maximum price: ${priceRange}</label>
+                    <label>{t('maximum_price')}: ${priceRange}</label>
                     <input
                         type="range"
                         min="0"
@@ -125,7 +124,7 @@ const ProductList = () => {
                 </div>
             </div>
 
-            <h1 className="collection-title">Latest Collection</h1>
+            <h1 className="collection-title">{t('latest_collection')}</h1>
             
             <div className="products-grid">
                 {filteredProducts.map(product => (
@@ -138,14 +137,14 @@ const ProductList = () => {
                         </div>
                         <div className="product-info">
                             <h3>{product.name}</h3>
-                            <p className="product-category">{product.category}</p>
+                            <p className="product-category">{t(product.category)}</p>
                             <p className="product-price">${product.price}</p>
                             <button 
                                 className="buy-now-button"
                                 onClick={() => handleBuyNow(product)}
                             >
                                 <i className="fas fa-shopping-cart"></i>
-                                Buy Now
+                                {t('buy_now')}
                             </button>
                         </div>
                     </div>

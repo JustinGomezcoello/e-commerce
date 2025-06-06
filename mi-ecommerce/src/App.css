@@ -50,6 +50,29 @@ body {
   margin-top: 20px;
 }
 
+/* Animación de entrada para el título de la marca */
+@keyframes brandEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.8);
+    filter: blur(10px);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(-25px) scale(0.9);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.brand-name {
+  animation: brandEntrance 1.5s ease-out forwards;
+}
+
 /* Animaciones globales */
 @keyframes fadeIn {
   from {
@@ -88,4 +111,31 @@ body {
 ::selection {
   background: #ffd700;
   color: #000;
+}
+
+/* Efecto de resplandor para elementos destacados */
+.glow-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.glow-effect::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,215,0,0.2) 0%, transparent 70%);
+  animation: rotateShadow 10s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotateShadow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 } 
