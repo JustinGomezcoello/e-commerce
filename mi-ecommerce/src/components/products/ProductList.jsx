@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css';
 
+// Importar las imágenes (aquí deberás reemplazar con tus propias imágenes)
+import tshirt1 from '../assets/images/tshirt1.jpg';
+import tshirt2 from '../assets/images/tshirt2.jpg';
+import hoodie1 from '../assets/images/hoodie1.jpg';
+import hoodie2 from '../assets/images/hoodie2.jpg';
+import accessory1 from '../assets/images/accessory1.jpg';
+import accessory2 from '../assets/images/accessory2.jpg';
+
 const ProductList = () => {
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [priceRange, setPriceRange] = useState(500);
@@ -12,7 +20,7 @@ const ProductList = () => {
             id: 1,
             name: 'To Love or to Be Loved',
             price: 49.99,
-            image: 'https://i.imgur.com/nV3oM3K.jpg',
+            image: tshirt1, // Usar la imagen importada
             category: 'T-Shirts',
             description: 'Limited edition philosophical streetwear piece'
         },
@@ -20,7 +28,7 @@ const ProductList = () => {
             id: 2,
             name: 'Mind Games Tee',
             price: 45.99,
-            image: 'https://i.imgur.com/2X4yKjD.jpg',
+            image: tshirt2, // Usar la imagen importada
             category: 'T-Shirts',
             description: 'Premium cotton with minimalist design'
         },
@@ -29,7 +37,7 @@ const ProductList = () => {
             id: 3,
             name: 'Ethereal Dreams Hoodie',
             price: 89.99,
-            image: 'https://i.imgur.com/7rR8qG5.jpg',
+            image: hoodie1, // Usar la imagen importada
             category: 'Hoodies',
             description: 'Oversized fit with embroidered details'
         },
@@ -37,7 +45,7 @@ const ProductList = () => {
             id: 4,
             name: 'Silent Thoughts Hoodie',
             price: 95.99,
-            image: 'https://i.imgur.com/uD3levB.jpg',
+            image: hoodie2, // Usar la imagen importada
             category: 'Hoodies',
             description: 'Heavy-weight cotton blend'
         },
@@ -46,7 +54,7 @@ const ProductList = () => {
             id: 5,
             name: 'Mindful Chain',
             price: 29.99,
-            image: 'https://i.imgur.com/pK9VVVt.jpg',
+            image: accessory1, // Usar la imagen importada
             category: 'Accessories',
             description: 'Stainless steel with vintage finish'
         },
@@ -54,7 +62,7 @@ const ProductList = () => {
             id: 6,
             name: 'Abstract Thoughts Bag',
             price: 39.99,
-            image: 'https://i.imgur.com/QN7dQk8.jpg',
+            image: accessory2, // Usar la imagen importada
             category: 'Accessories',
             description: 'Canvas tote with artistic print'
         }
@@ -77,9 +85,12 @@ const ProductList = () => {
 
     const categories = ['all', 'T-Shirts', 'Hoodies', 'Accessories'];
 
-    const handleWhatsApp = (product) => {
-        const message = `Hi! I'm interested in ${product.name} (${product.price} USD)`;
-        window.open(`https://wa.me/+593XXXXXXXXX?text=${encodeURIComponent(message)}`, '_blank');
+    const handleBuyNow = (product) => {
+        // Aquí puedes poner tu número de WhatsApp real
+        const phoneNumber = '+593980267544';
+        const message = `¡Hola! Me interesa comprar ${product.name} por $${product.price}. ¿Está disponible?`;
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
     };
 
     return (
@@ -88,7 +99,7 @@ const ProductList = () => {
                 <i className="fas fa-map-marker-alt"></i>
                 Shipping available only in Quito, Ecuador
             </div>
-            
+
             <div className="filters-section">
                 <div className="categories">
                     {categories.map(category => (
@@ -114,7 +125,7 @@ const ProductList = () => {
                 </div>
             </div>
 
-            <h1>Latest Collection</h1>
+            <h1 className="collection-title">Latest Collection</h1>
             
             <div className="products-grid">
                 {filteredProducts.map(product => (
@@ -130,11 +141,11 @@ const ProductList = () => {
                             <p className="product-category">{product.category}</p>
                             <p className="product-price">${product.price}</p>
                             <button 
-                                className="contact-whatsapp"
-                                onClick={() => handleWhatsApp(product)}
+                                className="buy-now-button"
+                                onClick={() => handleBuyNow(product)}
                             >
-                                <i className="fab fa-whatsapp"></i>
-                                Contact on WhatsApp
+                                <i className="fas fa-shopping-cart"></i>
+                                Buy Now
                             </button>
                         </div>
                     </div>
