@@ -134,6 +134,65 @@ app.get('/profile', verifyToken, async (req, res) => {
     }
 });
 
+// Actualizar usuario
+app.put('/users/:id', verifyToken, async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+        const updates = {};
+        
+        // Solo actualizar los campos proporcionados
+        if (name) updates.name = name;
+        if (email) updates.email = email;
+        if (password) {
+            updates.password = await bcrypt.hash(password, 10);
+        }
+
+        // Asegurarse de que solo el propio usuario pueda actualizar su perfil
+        if (req.user.id !== req.params.id) {
+            return res.status(403).json({ message: 'No tienes permiso para actualizar este usuario' });
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+            req.params.id,
+            updates,
+            { new: true }
+        ).select('-password');
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.json({
+            message: 'Usuario actualizado con éxito',
+            user: updatedUser
+        });
+    } catch (error) {
+        console.error('Error al actualizar usuario:', error);
+        res.status(500).json({ message: 'Error al actualizar el usuario' });
+    }
+});
+
+// Eliminar usuario
+app.delete('/users/:id', verifyToken, async (req, res) => {
+    try {
+        // Asegurarse de que solo el propio usuario pueda eliminar su cuenta
+        if (req.user.id !== req.params.id) {
+            return res.status(403).json({ message: 'No tienes permiso para eliminar este usuario' });
+        }
+
+        const deletedUser = await User.findByIdAndDelete(req.params.id);
+        
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.json({ message: 'Usuario eliminado con éxito' });
+    } catch (error) {
+        console.error('Error al eliminar usuario:', error);
+        res.status(500).json({ message: 'Error al eliminar el usuario' });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Servicio de Usuarios corriendo en http://localhost:${PORT}`);
 });

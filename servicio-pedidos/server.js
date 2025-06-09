@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 
 app.use(express.json());
 
-// Rutas
+// Obtener todos los pedidos
 app.get('/orders', async (req, res) => {
     try {
         const orders = await Order.find().populate('user products.product');
@@ -30,6 +30,20 @@ app.get('/orders', async (req, res) => {
     }
 });
 
+// Obtener un pedido específico
+app.get('/orders/:id', async (req, res) => {
+    try {
+        const order = await Order.findById(req.params.id).populate('user products.product');
+        if (!order) {
+            return res.status(404).json({ message: "Pedido no encontrado" });
+        }
+        res.json(order);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Crear nuevo pedido
 app.post('/orders', async (req, res) => {
     const { products, user, status } = req.body;
     if (!products || !user) {
@@ -39,6 +53,49 @@ app.post('/orders', async (req, res) => {
         const newOrder = new Order({ products, user, status });
         const savedOrder = await newOrder.save();
         res.status(201).json(savedOrder);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Actualizar pedido
+app.put('/orders/:id', async (req, res) => {
+    try {
+        const { products, status } = req.body;
+        const updates = {};
+        
+        if (products) updates.products = products;
+        if (status) updates.status = status;
+
+        const updatedOrder = await Order.findByIdAndUpdate(
+            req.params.id,
+            updates,
+            { new: true }
+        ).populate('user products.product');
+
+        if (!updatedOrder) {
+            return res.status(404).json({ message: 'Pedido no encontrado' });
+        }
+
+        res.json({
+            message: 'Pedido actualizado con éxito',
+            order: updatedOrder
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Eliminar pedido
+app.delete('/orders/:id', async (req, res) => {
+    try {
+        const deletedOrder = await Order.findByIdAndDelete(req.params.id);
+        
+        if (!deletedOrder) {
+            return res.status(404).json({ message: 'Pedido no encontrado' });
+        }
+
+        res.json({ message: 'Pedido eliminado con éxito' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
