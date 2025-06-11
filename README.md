@@ -135,6 +135,28 @@ graph TD
 
 ---
 
+## 📸 Visual Evidence
+
+Here's a visual walkthrough of the system's key features:
+
+### Login Page
+![Login Interface](docs/evidence/login-page.jpeg)
+*Secure authentication interface with JWT-based login system*
+
+### Product Listing
+![Product Catalog](docs/evidence/product-listing.jpeg)
+*Responsive product catalog with filtering and sorting capabilities*
+
+### Shopping Cart
+![Shopping Cart](docs/evidence/shopping-cart.jpeg)
+*Interactive shopping cart with real-time updates*
+
+### Checkout Process
+![Checkout Flow](docs/evidence/checkout-process.jpeg)
+*Streamlined checkout process with multiple payment options*
+
+---
+
 ## ⚙️ Configuration
 - **.env** (root): All secrets and connection strings
 - **user-service/config/config.js**: Reads from `.env` for DB and JWT
