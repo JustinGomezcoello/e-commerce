@@ -1,13 +1,18 @@
-FROM node:18
+FROM node:18-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
+# Copy package files
 COPY package*.json ./
 
-RUN npm install && npm rebuild
+# Install dependencies
+RUN npm install
 
+# Copy source code
 COPY . .
 
+# Expose port
 EXPOSE 3001
 
-CMD ["node", "server.js"]
+# Start the service
+CMD ["npm", "start"]

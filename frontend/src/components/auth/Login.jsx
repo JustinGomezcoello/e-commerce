@@ -10,6 +10,7 @@ const Login = () => {
         password: ''
     });
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -23,9 +24,10 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:3001/login', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -43,7 +45,10 @@ const Login = () => {
             localStorage.setItem('user', JSON.stringify(data.user));
             navigate('/');
         } catch (error) {
-            setError(error.message);
+            console.error('Login error:', error);
+            setError(error.message || t('login_error'));
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -108,8 +113,9 @@ const Login = () => {
                         whileTap={{ scale: 0.98 }}
                         type="submit"
                         className="auth-button"
+                        disabled={loading}
                     >
-                        {t('sign_in')}
+                        {loading ? 'Logging in...' : t('sign_in')}
                     </motion.button>
                 </form>
                 <motion.p 
@@ -125,4 +131,4 @@ const Login = () => {
     );
 };
 
-export default Login; 
+export default Login;

@@ -1,34 +1,31 @@
-# Utiliza una imagen base de Node.js
-FROM node:18
+# Build stage
+FROM node:18-alpine as build
 
-# Establece el directorio de trabajo dentro del contenedor
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copia el archivo 'package.json' y 'package-lock.json' (si existe)
+# Copy package files
 COPY package*.json ./
 
-# Instala las dependencias del proyecto usando --legacy-peer-deps para evitar conflictos
+# Install dependencies with legacy peer deps
 RUN npm install --legacy-peer-deps
 
-# Copia los archivos del proyecto al directorio de trabajo
+# Copy source code
 COPY . .
 
-# Asegurarse de que el directorio de imágenes existe
-RUN mkdir -p src/assets/images
+# Build the application
+RUN npm run build
 
-# Establecer variables de entorno para React
-ENV NODE_ENV=production
-ENV CI=false
-ENV PORT=3000
+# Production stage
+FROM nginx:alpine
 
-# Construir la aplicación
-RUN npm run build --legacy-peer-deps
+# Copy built assets from build stage
+COPY --from=build /app/build /usr/share/nginx/html
 
-# Instalar serve para servir la aplicación
-RUN npm install -g serve
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expone el puerto que el servidor usará
-EXPOSE 3000
+# Expose port
+EXPOSE 80
 
-# Comando para servir la aplicación construida con opciones específicas
-CMD ["serve", "-s", "build", "--listen", "3000", "--no-clipboard", "--single"]
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]

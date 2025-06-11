@@ -25,10 +25,7 @@ const Navbar = () => {
             
             <div className="navbar-center">
                 <Link to="/" className="brand-name">THOUGHTS</Link>
-            </div>
-
-            <div className="navbar-right">
-                <LanguageSelector />
+            </div>            <div className="navbar-right">
                 {authenticated ? (
                     <div className="nav-auth">
                         <Link to="/cart" className="nav-link cart-link">

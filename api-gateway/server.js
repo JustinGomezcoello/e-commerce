@@ -1,48 +1,55 @@
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const cors = require('cors');
+const connectDB = require('./config/database');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
-app.use(cors());
+
+// Connect to MongoDB
+connectDB();
+
+// CORS configuration
+app.use(cors({
+    origin: ['http://localhost', 'http://localhost:80', 'http://localhost:3000'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Middleware
 app.use(express.json());
 
-// Configuración de proxies para cada servicio
-const userServiceProxy = createProxyMiddleware({
-  target: 'http://localhost:3001',
-  changeOrigin: true,
-  pathRewrite: {
-    '^/api/users/register': '/register',
-    '^/api/users/login': '/login',
-    '^/api/users/profile': '/profile',
-    '^/api/users': '/'
-  }
-});
+// User routes
+app.use('/api/users', userRoutes);
 
+// Proxy configuration
 const productServiceProxy = createProxyMiddleware({
-  target: 'http://localhost:3002',
-  changeOrigin: true,
-  pathRewrite: {
-    '^/api/products': '/products'
-  }
+    target: 'http://product-service:3002',
+    changeOrigin: true,
+    pathRewrite: {
+        '^/api/products': '/api/products'
+    }
 });
 
 const orderServiceProxy = createProxyMiddleware({
-  target: 'http://localhost:3003',
-  changeOrigin: true,
-  pathRewrite: {
-    '^/api/orders': '/orders'
-  }
+    target: 'http://order-service:3003',
+    changeOrigin: true,
+    pathRewrite: {
+        '^/api/orders': '/api/orders'
+    }
 });
 
-// Rutas proxy
-app.use('/api/users', userServiceProxy);
+// Routes
 app.use('/api/products', productServiceProxy);
 app.use('/api/orders', orderServiceProxy);
 
-app.get('/', (req, res) => {
-  res.send('API Gateway funcionando');
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'OK' });
 });
 
-app.listen(8080, () => {
-  console.log('Gateway activo en http://localhost:8080');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`API Gateway running on port ${PORT}`);
 }); 
