@@ -1,12 +1,12 @@
 version: '3.8'
 
 services:
-  mi-ecommerce:
-    build: ./mi-ecommerce
+  frontend:
+    build: ./frontend
     ports:
       - "3000:3000"
     volumes:
-      - ./mi-ecommerce:/usr/src/app
+      - ./frontend:/usr/src/app
       - /usr/src/app/node_modules
       - /usr/src/app/build
     environment:
@@ -14,26 +14,26 @@ services:
       - CI=false
       - PORT=3000
     depends_on:
-      - servicio-productos
-      - servicio-usuarios
-      - servicio-pedidos
+      - product-service
+      - user-service
+      - order-service
 
-  servicio-usuarios:
-    build: ./servicio-usuarios
+  user-service:
+    build: ./user-service
     ports:
       - "3001:3001"
     environment:
       - NODE_ENV=production
 
-  servicio-productos:
-    build: ./servicio-productos
+  product-service:
+    build: ./product-service
     ports:
       - "3002:3002"
     environment:
       - NODE_ENV=production
 
-  servicio-pedidos:
-    build: ./servicio-pedidos
+  order-service:
+    build: ./order-service
     ports:
       - "3003:3003"
     environment:

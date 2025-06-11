@@ -73,7 +73,7 @@ Before you begin, ensure you have the following installed:
 
 2. **Install frontend dependencies**
    ```bash
-   cd mi-ecommerce
+   cd frontend
    npm install
    ```
 
@@ -107,7 +107,7 @@ Before you begin, ensure you have the following installed:
 
 6. **Start frontend development server**
    ```bash
-   cd mi-ecommerce
+   cd frontend
    npm start
 
    ```
