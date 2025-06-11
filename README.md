@@ -246,6 +246,24 @@ docker-compose run --rm product-service npm test
 - Secrets in `.env` only
 - Input validation everywhere
 
+### Secrets Management Best Practices
+- **Never commit sensitive credentials** to version control
+- Use `.env` files for all sensitive information
+- Each service reads environment variables from `.env`
+- Use `.env.example` as a template (with placeholder values)
+- Rotate secrets regularly
+- Use secret detection tools in your CI/CD pipeline
+- Enable pre-commit hooks to prevent accidental secret exposure
+
+### Environment Setup
+1. Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+2. Update `.env` with your actual credentials
+3. Never commit the actual `.env` file
+4. Use different credentials for development and production
+
 ---
 
 ## 📈 Scaling & Operations
