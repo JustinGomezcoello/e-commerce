@@ -1,8 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { getProfile } = require('../controllers/userController');
+const UserController = require('../controllers/userController');
 const { verifyToken } = require('../middleware/auth');
 
-router.get('/profile', verifyToken, getProfile);
+const userController = UserController.getInstance();
 
-module.exports = router; 
+// Public routes
+router.post('/register', (req, res) => userController.register(req, res));
+router.post('/login', (req, res) => userController.login(req, res));
+
+// Protected routes
+router.get('/profile', verifyToken, (req, res) => userController.getProfile(req, res));
+
+module.exports = router;

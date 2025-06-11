@@ -6,18 +6,7 @@ const logger = require('../utils/logger');
 
 class UserController {
     constructor() {
-        if (!UserController.instance) {
-            this.userRepository = new MongoUserRepository();
-            UserController.instance = this;
-        }
-        return UserController.instance;
-    }
-
-    static getInstance() {
-        if (!UserController.instance) {
-            UserController.instance = new UserController();
-        }
-        return UserController.instance;
+        this.userRepository = new MongoUserRepository();
     }
 
     async register(req, res) {
@@ -149,4 +138,4 @@ class UserController {
     }
 }
 
-module.exports = UserController;
+module.exports = new UserController();

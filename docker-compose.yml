@@ -1,55 +1,81 @@
 version: '3.8'
 
 services:
+  # Frontend Service
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/build
+      - "80:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - ecommerce-network
     environment:
       - NODE_ENV=production
-      - CI=false
-      - PORT=3000
-    depends_on:
-      - product-service
-      - user-service
-      - order-service
+      - REACT_APP_API_URL=http://localhost:8080
 
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - user-service
+      - product-service
+      - order-service
+    networks:
+      - ecommerce-network
+    environment:
+      - NODE_ENV=production
+      - USER_SERVICE_URL=http://user-service:3001
+      - PRODUCT_SERVICE_URL=http://product-service:3002
+      - ORDER_SERVICE_URL=http://order-service:3003
+
+  # User Service
   user-service:
-    build: ./user-service
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
     ports:
       - "3001:3001"
-    environment:
+    networks:
+      - ecommerce-network    environment:
       - NODE_ENV=production
+      - MONGODB_URI=${MONGODB_URI}
+      - JWT_SECRET=${JWT_SECRET}
 
-  product-service:
-    build: ./product-service
+  # Product Service  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
     ports:
       - "3002:3002"
+    networks:
+      - ecommerce-network
     environment:
       - NODE_ENV=production
+      - MONGODB_URI=${MONGODB_URI}
 
+  # Order Service
   order-service:
-    build: ./order-service
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
     ports:
       - "3003:3003"
+    networks:
+      - ecommerce-network
     environment:
       - NODE_ENV=production
+      - MONGODB_URI=${MONGODB_URI}
 
-  mongo:
-    image: mongo:latest
-    ports:
-      - "27017:27017"
-    volumes:
-      - ./mongod.conf:/etc/mongo/mongod.conf
-      - mongo-data:/data/db
-    command: ["mongod", "--config", "/etc/mongo/mongod.conf"]
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: mongoadmin
-      MONGO_INITDB_ROOT_PASSWORD: secretpassword
+networks:
+  ecommerce-network:
+    driver: bridge
 
 volumes:
-  mongo-data:
+  mongodb_data:

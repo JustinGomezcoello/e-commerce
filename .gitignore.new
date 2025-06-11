@@ -18,7 +18,7 @@ yarn-error.log*
 **/combined.log
 **/error.log
 
-# Environment variables and configurations
+# Environment variables
 .env
 .env.*
 **/.env
@@ -28,16 +28,6 @@ yarn-error.log*
 .env.development
 .env.test
 .env.production
-
-# Configuration files with sensitive data
-**/config/config.js
-**/config/database.js
-**/config/keys.js
-**/config/*.config.js
-**/*config*.json
-!**/config/*.example.js
-!**/config/*.template.js
-!**/config/*.sample.js
 
 # IDE specific files
 .idea/

@@ -1,203 +1,304 @@
-# STREETWEAR E-commerce Platform
+# 🛍️ STREETWEAR E-commerce Microservices Platform
 
-A modern, responsive e-commerce platform specialized in streetwear fashion, built with React and microservices architecture.
+<div align="center">
 
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)
 
-## 🚀 Features
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](http://makeapullrequest.com)
 
-- **Modern UI/UX**
-  - Responsive design for all devices
-  - Glassmorphism effects
-  - Smooth animations and transitions
-  - Dark theme optimized for streetwear aesthetics
+</div>
 
-- **Product Management**
-  - Category-based filtering
-  - Price range filtering
-  - Dynamic product grid
-  - Detailed product views
-  - Real-time stock updates
+---
 
-- **User Features**
-  - User authentication (login/register)
-  - Profile management
-  - Order history
-  - Wishlist functionality
-  - Profile picture upload
+## 📑 Table of Contents
+- [🎯 Project Overview](#-project-overview)
+- [✅ Why This System Meets Modern Microservices Standards](#-why-this-system-meets-modern-microservices-standards)
+- [🗺️ System Architecture](#️-system-architecture)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [🚀 Installation & Setup](#-installation--setup)
+- [📸 Visual Evidence](#-visual-evidence)
+- [⚙️ Configuration](#️-configuration)
+- [🧩 Service Details](#-service-details)
+- [🧑‍💻 Interface & Dependency Injection Example](#-interface--dependency-injection-example)
+- [📚 API Documentation](#-api-documentation)
+- [🧪 Testing](#-testing)
+- [🔒 Security](#-security)
+- [📈 Scaling & Operations](#-scaling--operations)
+- [🐛 Troubleshooting](#-troubleshooting)
+- [👥 Authors](#-authors)
+- [📄 License](#-license)
 
-- **Shopping Experience**
-  - WhatsApp integration for direct communication
-  - Ecuador-focused shipping (Quito only)
-  - Secure payment gateway integration
-  - Real-time order tracking
+---
 
-## 🛠 Tech Stack
+## 🎯 Project Overview
+A modern, scalable e-commerce platform built with microservices, clean architecture, and best practices. Designed for streetwear fashion, it is production-ready, secure, and easy to extend.
 
-- **Frontend**
-  - React.js
-  - CSS3 with modern features
-  - Font Awesome icons
-  - Responsive design principles
+---
 
-- **Backend**
-  - Node.js
-  - Express.js
-  - MongoDB
-  - Microservices Architecture
+## ✅ Why This System Meets Modern Microservices Standards
 
-- **API Gateway**
-  - Express.js
-  - HTTP-Proxy-Middleware
-  - CORS support
+**1. Domain Decomposition**: Each microservice is focused on a single business domain (User, Product, Order, Gateway).
 
-- **DevOps**
-  - Docker
-  - Docker Compose
-  - Nginx (reverse proxy)
+**2. Communication**: Services communicate via REST APIs and asynchronous events (RabbitMQ-ready), with an API Gateway for unified access.
 
-## 📋 Prerequisites
+**3. Distributed Data Management**: Each service manages its own MongoDB database, ensuring data isolation and scalability.
 
-Before you begin, ensure you have the following installed:
-- Node.js (v14 or higher)
-- Docker
-- Docker Compose
-- Git
+**4. Deployment & Operation**: Fully containerized with Docker Compose, supports independent deployment, and externalized configuration via `.env` and `config.js`/`config.example.js`.
 
-## 🔧 Installation & Setup
+**5. Observability & Resilience**: Centralized logging (Winston), health checks, circuit breaker pattern, and retry logic for robust, observable services.
 
-1. **Clone the repository**
+**Best Practices Implemented:**
+- Interface-based architecture (see `user-service/interfaces/IUserRepository.js`)
+- Dependency injection (repositories injected into controllers/services)
+- Secrets/configuration via `.env` and `config.js` (never hardcoded)
+- Clean, modular codebase
+
+---
+
+## 🗺️ System Architecture
+
+```mermaid
+graph TD
+    Client[Client App] -->|HTTP| Gateway[API Gateway]
+    Gateway -->|REST| User[User Service]
+    Gateway -->|REST| Product[Product Service]
+    Gateway -->|REST| Order[Order Service]
+    User -->|MongoDB| UserDB[(User DB)]
+    Product -->|MongoDB| ProductDB[(Product DB)]
+    Order -->|MongoDB| OrderDB[(Order DB)]
+    User -->|RabbitMQ| MQ[(Message Queue)]
+    Product -->|RabbitMQ| MQ
+    Order -->|RabbitMQ| MQ
+    User -->|Redis| Cache[(Redis)]
+    Product -->|Redis| Cache
+    Order -->|Redis| Cache
+```
+
+---
+
+## 🛠️ Tech Stack
+- **Frontend**: React, Nginx
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB (per service)
+- **API Gateway**: Express.js
+- **Cache**: Redis
+- **Message Queue**: RabbitMQ (optional, event-driven ready)
+- **Containerization**: Docker, Docker Compose
+- **Security**: JWT, bcrypt, CORS, rate limiting
+- **Testing**: Jest, Supertest
+
+---
+
+## 🚀 Installation & Setup
+
+### Prerequisites
+- Docker (v20.10+)
+- Docker Compose (v2.0+)
+- Node.js (v16+)
+- MongoDB Atlas or local instance
+- Redis (optional, for caching)
+
+### Steps
+1. **Clone the repository:**
    ```bash
-   git https://github.com/JustinGomezcoello/e-commerce
+   git clone https://github.com/JustinGomezcoello/e-commerce.git
    cd e-commerce
    ```
-
-2. **Install frontend dependencies**
+2. **Copy and edit environment variables:**
    ```bash
-   cd frontend
-   npm install
+   cp .env.example .env
+   # Edit .env with your MongoDB URI, JWT secret, etc.
    ```
-
-3. **Set up API Gateway**
+   - **Where to put credentials:**
+     - MongoDB URI, usernames, passwords, JWT secrets, and other sensitive data go in `.env` (never commit this file).
+     - Example:
+       ```env
+       MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/ecommerce
+       JWT_SECRET=your_jwt_secret
+       ```
+3. **Build and start all services:**
    ```bash
-   cd ../api-gateway
-   npm install
+   docker-compose build
+   docker-compose up -d
    ```
+4. **Access the app:**
+   - Frontend: http://localhost
+   - API Gateway: http://localhost:8080
 
-4. **Environment Configuration**
-   Create `.env` files in both frontend and API Gateway directories:
+---
+
+## 📸 Visual Evidence
+
+Here's a visual walkthrough of the system's key features:
+
+### Login System
+![Login Interface](docs/evidence/Login.jpeg)
+*Secure authentication interface with JWT-based login system*
+
+### Registration Interface
+![Registration Page](docs/evidence/Register.jpeg)
+*User registration with secure data validation*
+
+### Main Store Page
+![Main Page](docs/evidence/MainPage.jpeg)
+*Main shopping interface before login*
+
+### Authenticated Store View
+![Main Page After Login](docs/evidence/MainPageSingedup.jpeg)
+*Enhanced shopping experience for authenticated users*
+
+### WhatsApp Integration
+![WhatsApp Service](docs/evidence/WhatsAPP-service.jpeg)
+*Integrated WhatsApp service for customer support and notifications*
+
+---
+
+## ⚙️ Configuration
+- **.env** (root): All secrets and connection strings
+- **user-service/config/config.js**: Reads from `.env` for DB and JWT
+- **product-service/config/**: Reads from `.env`
+- **order-service/config/**: Reads from `.env`
+- **Never commit real credentials! Use `.env.example` as a template.**
+
+---
+
+## 🧩 Service Details
+
+### API Gateway
+- Unified entry point, CORS, rate limiting, request routing
+
+### User Service
+- User registration, login, JWT auth, profile, repository pattern, DI, circuit breaker
+
+### Product Service
+- Product CRUD, inventory, image upload, caching
+
+### Order Service
+- Order creation, payment, status, event-driven ready
+
+---
+
+## 🧑‍💻 Interface & Dependency Injection Example
+
+**Interface:**
+```js
+// user-service/interfaces/IUserRepository.js
+class IUserRepository {
+  findById(id) { throw new Error('Not implemented'); }
+  save(user) { throw new Error('Not implemented'); }
+}
+module.exports = IUserRepository;
+```
+
+**Dependency Injection:**
+```js
+// user-service/controllers/userController.js
+const IUserRepository = require('../interfaces/IUserRepository');
+class UserController {
+  constructor(userRepository) {
+    if (!(userRepository instanceof IUserRepository)) throw new Error('Invalid repository');
+    this.userRepository = userRepository;
+  }
+  // ...
+}
+```
+
+**Config Example:**
+```js
+// user-service/config/config.js
+module.exports = {
+  database: { url: process.env.MONGODB_URI },
+  jwt: { secret: process.env.JWT_SECRET }
+};
+```
+
+---
+
+## 📚 API Documentation
+- **Swagger UI:** http://localhost:8080/api-docs
+- **OpenAPI Spec:** http://localhost:8080/api-docs.json
+
+---
+
+## 🧪 Testing
+```bash
+# Run all tests
+docker-compose run --rm user-service npm test
+# Or for a specific service
+docker-compose run --rm product-service npm test
+```
+
+---
+
+## 🔒 Security
+- JWT authentication, RBAC
+- Password hashing (bcrypt)
+- CORS, rate limiting, helmet
+- Secrets in `.env` only
+- Input validation everywhere
+
+### Secrets Management Best Practices
+- **Never commit sensitive credentials** to version control
+- Use `.env` files for all sensitive information
+- Each service reads environment variables from `.env`
+- Use `.env.example` as a template (with placeholder values)
+- Rotate secrets regularly
+- Use secret detection tools in your CI/CD pipeline
+- Enable pre-commit hooks to prevent accidental secret exposure
+
+### Environment Setup
+1. Copy `.env.example` to `.env`:
    ```bash
-   # Frontend .env
-   REACT_APP_API_URL=http://localhost:8080
-   
-   # API Gateway .env
-   PORT=8080
-   USER_SERVICE_URL=http://service-users:3001
-   PRODUCT_SERVICE_URL=http://service-products:3002
-   ORDER_SERVICE_URL=http://service-orders:3003
+   cp .env.example .env
    ```
-5. **Rebuild and start Docker services**
-   ```bash
-   # Stop and remove existing containers
-   docker-compose down
+2. Update `.env` with your actual credentials
+3. Never commit the actual `.env` file
+4. Use different credentials for development and production
 
-   # rebuild and start the containers:
-   docker-compose up --build
-   
-   ```
+---
 
-6. **Start frontend development server**
-   ```bash
-   cd frontend
-   npm start
+## 📈 Scaling & Operations
+- **Horizontal scaling:**
+  ```bash
+  docker-compose up -d --scale user-service=3
+  ```
+- **Load balancing:** Nginx config included
+- **Health checks:** `/health` endpoints
+- **Centralized logging:** Winston, log files per service
 
-   ```
-
-## 🚀 Usage
-
-After installation, you can access:
-- Frontend: http://localhost:3000
-- API Gateway: http://localhost:8080
-
-### Available Services:
-- Users Service: http://localhost:3001
-- Products Service: http://localhost:3002
-- Orders Service: http://localhost:3003
-
-## 🔍 API Documentation
-
-### API Gateway Endpoints
-
-- **Authentication**
-  - POST `/api/users/register` - Register new user
-  - POST `/api/users/login` - User login
-  - GET `/api/users/profile` - Get user profile
-
-- **Products**
-  - GET `/api/products` - Get all products
-  - GET `/api/products/:id` - Get specific product
-  - GET `/api/products/category/:category` - Get products by category
-
-- **Orders**
-  - POST `/api/orders` - Create new order
-  - GET `/api/orders/user/:userId` - Get user orders
-  - PUT `/api/orders/:id` - Update order status
-
-## 🔐 Security
-
-- JWT Authentication
-- CORS protection
-- Rate limiting
-- Input validation
-- Secure password hashing
-
-
-## 🌟 Best Practices
-
-- Component-based architecture
-- Clean code principles
-- Performance optimization
-- SEO friendly
-- Accessibility standards
-- Error handling
-- Loading states
-
-## 🔄 Development Workflow
-
-1. Make changes in development
-2. Test locally
-3. Build Docker images
-4. Deploy to staging
-5. Run tests
-6. Deploy to production
+---
 
 ## 🐛 Troubleshooting
+- **Check logs:**
+  ```bash
+  docker-compose logs user-service
+  docker-compose logs api-gateway
+  ```
+- **Check health:**
+  ```bash
+  curl http://localhost:8080/health
+  ```
+- **Common issues:**
+  - Wrong credentials in `.env`
+  - MongoDB Atlas IP whitelist
+  - Ports in use
 
-Common issues and solutions:
+---
 
-1. **Services not connecting**
-   ```bash
-   # Check if all containers are running
-   docker-compose ps
-   
-   # Check logs
-   docker-compose logs -f
-   ```
+## 👥 Authors
+- **Jhoel Suarez**
+- **Justin Gomezcoello**
 
-2. **Frontend not loading**
-   ```bash
-   # Clear npm cache
-   npm cache clean --force
-   
-   # Reinstall dependencies
-   rm -rf node_modules
-   npm install
-   ```
-
-
+---
 
 ## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
-
-
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
