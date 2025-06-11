@@ -139,21 +139,25 @@ graph TD
 
 Here's a visual walkthrough of the system's key features:
 
-### Login Page
-![Login Interface](docs/evidence/login-page.jpeg)
+### Login System
+![Login Interface](docs/evidence/Login.jpeg)
 *Secure authentication interface with JWT-based login system*
 
-### Product Listing
-![Product Catalog](docs/evidence/product-listing.jpeg)
-*Responsive product catalog with filtering and sorting capabilities*
+### Registration Interface
+![Registration Page](docs/evidence/Register.jpeg)
+*User registration with secure data validation*
 
-### Shopping Cart
-![Shopping Cart](docs/evidence/shopping-cart.jpeg)
-*Interactive shopping cart with real-time updates*
+### Main Store Page
+![Main Page](docs/evidence/MainPage.jpeg)
+*Main shopping interface before login*
 
-### Checkout Process
-![Checkout Flow](docs/evidence/checkout-process.jpeg)
-*Streamlined checkout process with multiple payment options*
+### Authenticated Store View
+![Main Page After Login](docs/evidence/MainPageSingedup.jpeg)
+*Enhanced shopping experience for authenticated users*
+
+### WhatsApp Integration
+![WhatsApp Service](docs/evidence/WhatsAPP-service.jpeg)
+*Integrated WhatsApp service for customer support and notifications*
 
 ---
 
